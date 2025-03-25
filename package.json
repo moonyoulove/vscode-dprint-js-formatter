@@ -1,13 +1,14 @@
 {
   "name": "vscode-dprint-js-formatter",
-  "displayName": "JS Formatter for DPrint",
-  "description": "",
-  "version": "0.2.0",
+  "displayName": "JS Formatter for Dprint",
+  "description": "Format JavaScript and TypeScript using dprint, without the need for manual setup or configuration.",
+  "version": "0.2.1",
   "publisher": "moonyoulove",
   "repository": {
     "type": "git",
     "url": "https://github.com/moonyoulove/vscode-dprint-js-formatter.git"
   },
+  "icon": "resources/icon.png",
   "engines": {
     "vscode": "^1.90.0"
   },
