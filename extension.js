@@ -15,7 +15,12 @@ function setConfig(config = {}) {
 
 function formatText(text, language) {
     try {
-        const filePath = language === "typescript" ? "*.ts" : "*.js";
+        const filePath = {
+            "javascript": "*.js",
+            "typescript": "*.ts",
+            "javascriptreact": "*.jsx",
+            "typescriptreact": "*.tsx",
+        }[language];
         return dprint.formatter.formatText({ filePath, fileText: text });
     } catch (error) {
         console.error("Failed to format text");
@@ -25,8 +30,8 @@ function formatText(text, language) {
 
 function findRange(text) {
     const lines = text.split(/(?<=\n)/);
-    const start = lines.findIndex(line => line.match(/\S/));
-    const end = lines.findLastIndex(line => line.match(/\S/)) + 1;
+    const start = lines.findIndex((line) => line.match(/\S/));
+    const end = lines.findLastIndex((line) => line.match(/\S/)) + 1;
     return [
         lines.slice(0, start).join(""),
         lines.slice(start, end).join(""),
@@ -47,11 +52,11 @@ function getBytesRange(document, range) {
 function activate(context) {
     const buffer = fs.readFileSync(getPath());
     dprint.formatter = createFromBuffer(buffer);
-    const config = vscode.workspace.getConfiguration(extensionName).get("config");
-    setConfig(config);
+    const config = vscode.workspace.getConfiguration();
+    setConfig(config.get("dprint-js-formatter.config"));
 
     context.subscriptions.push(
-        vscode.languages.registerDocumentRangeFormattingEditProvider(["javascript", "typescript"], {
+        vscode.languages.registerDocumentRangeFormattingEditProvider(["javascript", "typescript", "javascriptreact", "typescriptreact"], {
             provideDocumentRangeFormattingEdits(document, range) {
                 const text = document.getText(range);
                 const language = document.languageId;
@@ -63,20 +68,22 @@ function activate(context) {
         }),
     );
 
-    context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider(["javascript", "typescript"], {
-        provideDocumentFormattingEdits(document) {
-            const text = document.getText();
-            const language = document.languageId;
-            const range = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
-            const result = formatText(text, language);
-            return [new vscode.TextEdit(range, result)];
-        },
-    }));
+    context.subscriptions.push(
+        vscode.languages.registerDocumentFormattingEditProvider(["javascript", "typescript", "javascriptreact", "typescriptreact"], {
+            provideDocumentFormattingEdits(document) {
+                const text = document.getText();
+                const language = document.languageId;
+                const range = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+                const result = formatText(text, language);
+                return [new vscode.TextEdit(range, result)];
+            },
+        }),
+    );
 
     context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(({ affectsConfiguration }) => {
-        if (affectsConfiguration("dprint.config")) {
-            const config = vscode.workspace.getConfiguration(extensionName).get("config");
-            setConfig(config);
+        if (affectsConfiguration("dprint-js-formatter.config")) {
+            const config = vscode.workspace.getConfiguration();
+            setConfig(config.get("dprint-js-formatter.config"));
         }
     }));
 }

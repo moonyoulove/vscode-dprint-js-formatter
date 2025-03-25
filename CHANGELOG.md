@@ -1,9 +1,5 @@
 # Change Log
 
-All notable changes to the "dprint" extension will be documented in this file.
+## v0.2.0
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- First release

@@ -1,9 +1,13 @@
 {
-  "name": "dprint",
-  "displayName": "dprint",
+  "name": "vscode-dprint-js-formatter",
+  "displayName": "JS Formatter for DPrint",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "publisher": "moonyoulove",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moonyoulove/vscode-dprint-js-formatter.git"
+  },
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -12,17 +16,19 @@
   ],
   "activationEvents": [
     "onLanguage:javascript",
-    "onLanguage:typescript"
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
   ],
   "main": "./extension.js",
   "contributes": {
     "configuration": {
-      "title": "dprint",
+      "title": "JS Formatter for DPrint",
       "properties": {
-        "dprint.config": {
+        "dprint-js-formatter.config": {
           "type": "object",
           "default": {},
-          "description": "The dprint configuration.",
+          "markdownDescription": "The dprint configuration. see [doc](https://dprint.dev/plugins/typescript/config/)",
           "properties": {
             "locked": {
               "description": "Whether the configuration is not allowed to be overridden or extended.",
@@ -1005,7 +1011,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
-    "@types/vscode": "^1.91.0",
+    "@types/vscode": "^1.90.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^9.7.0",
@@ -1013,6 +1019,7 @@
   },
   "dependencies": {
     "@dprint/formatter": "^0.4.1",
-    "@dprint/typescript": "^0.91.4"
-  }
+    "@dprint/typescript": "^0.94.0"
+  },
+  "license": "MIT"
 }
